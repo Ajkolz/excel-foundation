@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Excel Foundation — Raising Excellence, Changing Lives</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; background: #fff; color: #1a1a2e; }
+
+    /* ── NAV ── */
+    .nav { display: flex; justify-content: space-between; align-items: center; padding: 16px 32px; background: #1a1a2e; position: sticky; top: 0; z-index: 100; }
+    .logo-wrap { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .logo-txt { color: #fff; font-size: 13px; font-weight: 600; letter-spacing: 0.05em; line-height: 1.3; }
+    .logo-txt span { color: #F59E0B; font-size: 10px; letter-spacing: 0.12em; display: block; font-weight: 400; }
+    .nav-links { display: flex; gap: 28px; }
+    .nav-links a { font-size: 13px; color: rgba(255,255,255,0.7); text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover { color: #fff; }
+    .nav-cta { font-size: 13px; font-weight: 600; padding: 10px 22px; background: #F59E0B; color: #1a1a2e; border: none; border-radius: 8px; cursor: pointer; text-decoration: none; }
+    .nav-cta:hover { background: #e08e00; }
+    .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+    .nav-hamburger span { display: block; width: 22px; height: 2px; background: #fff; border-radius: 2px; }
+
+    /* ── HERO ── */
+    .hero { background: #1a1a2e; padding: 72px 32px 64px; display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+    .hero-tag { display: inline-flex; align-items: center; gap: 8px; background: rgba(245,158,11,0.15); border: 0.5px solid rgba(245,158,11,0.4); color: #F59E0B; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; padding: 6px 14px; border-radius: 100px; margin-bottom: 24px; }
+    .hero h1 { font-size: 40px; font-weight: 700; color: #fff; line-height: 1.15; margin-bottom: 20px; }
+    .hero h1 em { color: #F59E0B; font-style: normal; }
+    .hero p { font-size: 15px; color: rgba(255,255,255,0.65); line-height: 1.75; margin-bottom: 32px; }
+    .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn-gold { font-size: 14px; font-weight: 600; padding: 14px 28px; background: #F59E0B; color: #1a1a2e; border: none; border-radius: 8px; cursor: pointer; text-decoration: none; display: inline-block; transition: background 0.2s; }
+    .btn-gold:hover { background: #e08e00; }
+    .btn-white-outline { font-size: 14px; font-weight: 600; padding: 14px 28px; background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.35); border-radius: 8px; cursor: pointer; text-decoration: none; display: inline-block; transition: background 0.2s; }
+    .btn-white-outline:hover { background: rgba(255,255,255,0.08); }
+
+    /* Hero image grid */
+    .hero-img-grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto auto; gap: 12px; }
+    .img-card { border-radius: 12px; overflow: hidden; position: relative; }
+    .img-card.tall { grid-row: span 2; }
+    .img-placeholder { width: 100%; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 10px; padding: 24px; }
+    .img-placeholder.c1 { background: #0F6E56; min-height: 240px; }
+    .img-placeholder.c2 { background: #185FA5; min-height: 110px; }
+    .img-placeholder.c3 { background: #854F0B; min-height: 110px; }
+    .img-caption { font-size: 11px; color: rgba(255,255,255,0.85); font-weight: 600; text-align: center; }
+
+    /* ── STATS BAR ── */
+    .stats-bar { display: grid; grid-template-columns: repeat(4, 1fr); background: #F59E0B; }
+    .stat-item { padding: 28px 20px; text-align: center; border-right: 1px solid rgba(26,26,46,0.15); }
+    .stat-item:last-child { border-right: none; }
+    .stat-n { font-size: 30px; font-weight: 700; color: #1a1a2e; }
+    .stat-l { font-size: 11px; color: rgba(26,26,46,0.65); margin-top: 4px; letter-spacing: 0.05em; }
+
+    /* ── PROGRAMS ── */
+    .section { padding: 64px 32px; }
+    .section-badge { display: inline-block; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; padding: 5px 14px; border-radius: 100px; margin-bottom: 12px; }
+    .badge-teal { background: #E1F5EE; color: #0F6E56; }
+    .badge-blue { background: #E6F1FB; color: #185FA5; }
+    .badge-amber { background: #FAEEDA; color: #854F0B; }
+    .section-title { font-size: 28px; font-weight: 700; color: #1a1a2e; margin-bottom: 12px; }
+    .section-sub { font-size: 15px; color: #5F5E5A; line-height: 1.7; max-width: 520px; margin-bottom: 40px; }
+    .programs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .prog-card { border-radius: 12px; overflow: hidden; border: 0.5px solid #e5e5e5; background: #fff; }
+    .prog-header { height: 140px; display: flex; align-items: flex-end; padding: 20px; position: relative; }
+    .prog-header.edu { background: #1D9E75; }
+    .prog-header.health { background: #185FA5; }
+    .prog-header.empower { background: #854F0B; }
+    .prog-icon-wrap { position: absolute; top: 16px; right: 16px; width: 36px; height: 36px; background: rgba(255,255,255,0.2); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+    .prog-title-h { font-size: 16px; font-weight: 600; color: #fff; }
+    .prog-body { padding: 20px; }
+    .prog-desc { font-size: 13px; color: #5F5E5A; line-height: 1.65; margin-bottom: 16px; }
+    .prog-link { font-size: 12px; color: #1D9E75; font-weight: 600; text-decoration: none; cursor: pointer; }
+
+    /* ── IMPACT ── */
+    .impact-section { padding: 64px 32px; background: #1a1a2e; }
+    .impact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+    .impact-stories { display: flex; flex-direction: column; gap: 16px; }
+    .story-card { background: rgba(255,255,255,0.06); border: 0.5px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
+    .story-avatar { width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; }
+    .av1 { background: #1D9E75; color: #E1F5EE; }
+    .av2 { background: #378ADD; color: #E6F1FB; }
+    .av3 { background: #BA7517; color: #FAEEDA; }
+    .story-name { font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 4px; }
+    .story-text { font-size: 12px; color: rgba(255,255,255,0.6); line-height: 1.6; }
+    .story-loc { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 6px; }
+    .progress-wrap { margin-top: 12px; }
+    .progress-row { display: flex; justify-content: space-between; font-size: 12px; color: rgba(255,255,255,0.6); margin-bottom: 6px; }
+    .progress-bar { height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden; margin-bottom: 16px; }
+    .progress-fill { height: 100%; border-radius: 3px; }
+
+    /* ── DONATE ── */
+    .donate-section { padding: 64px 32px; background: #fafafa; }
+    .donate-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+    .donate-card { background: #fff; border-radius: 16px; padding: 32px; border: 0.5px solid #e5e5e5; }
+    .donate-title { font-size: 16px; font-weight: 600; color: #1a1a2e; margin-bottom: 20px; }
+    .amounts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
+    .amt { padding: 12px 6px; text-align: center; border: 1px solid #e5e5e5; border-radius: 8px; font-size: 14px; font-weight: 600; color: #1a1a2e; cursor: pointer; background: #fff; transition: all 0.2s; }
+    .amt:hover { border-color: #1a1a2e; }
+    .amt.active { border-color: #1a1a2e; background: #1a1a2e; color: #fff; }
+    .donate-impact { font-size: 12px; color: #5F5E5A; margin-bottom: 24px; line-height: 1.6; }
+    .btn-donate { width: 100%; padding: 14px; background: #F59E0B; color: #1a1a2e; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+    .btn-donate:hover { background: #e08e00; }
+    .alloc-row-d { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+    .alloc-bar-d { flex: 1; height: 8px; background: #e5e5e5; border-radius: 4px; overflow: hidden; }
+    .alloc-fill-d { height: 100%; border-radius: 4px; }
+    .alloc-label-d { font-size: 13px; color: #5F5E5A; min-width: 110px; }
+    .alloc-pct-d { font-size: 13px; font-weight: 600; color: #1a1a2e; min-width: 36px; text-align: right; }
+
+    /* ── FOOTER ── */
+    .footer { background: #1a1a2e; padding: 40px 32px 28px; }
+    .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 32px; margin-bottom: 32px; }
+    .footer-brand p { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.7; margin-top: 12px; max-width: 220px; }
+    .footer-col-title { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 14px; }
+    .footer-col a { display: block; font-size: 13px; color: rgba(255,255,255,0.6); text-decoration: none; margin-bottom: 8px; transition: color 0.2s; }
+    .footer-col a:hover { color: #F59E0B; }
+    .footer-bottom { border-top: 0.5px solid rgba(255,255,255,0.1); padding-top: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+    .footer-copy { font-size: 12px; color: rgba(255,255,255,0.35); }
+    .footer-links-b { display: flex; gap: 20px; }
+    .footer-links-b a { font-size: 12px; color: rgba(255,255,255,0.35); text-decoration: none; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .nav { padding: 14px 18px; }
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+      .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 60px; left: 0; right: 0; background: #1a1a2e; padding: 20px 24px; gap: 16px; border-top: 0.5px solid rgba(255,255,255,0.1); z-index: 99; }
+      .hero { grid-template-columns: 1fr; padding: 40px 18px; }
+      .hero h1 { font-size: 28px; }
+      .hero-img-grid { grid-template-columns: 1fr 1fr; }
+      .stats-bar { grid-template-columns: 1fr 1fr; }
+      .stat-item { border-right: none; border-bottom: 1px solid rgba(26,26,46,0.1); }
+      .section { padding: 40px 18px; }
+      .programs-grid { grid-template-columns: 1fr; }
+      .impact-section { padding: 40px 18px; }
+      .impact-inner { grid-template-columns: 1fr; }
+      .donate-section { padding: 40px 18px; }
+      .donate-inner { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+      .footer { padding: 32px 18px 20px; }
+    }
+    @media (max-width: 480px) {
+      .hero h1 { font-size: 24px; }
+      .stats-bar { grid-template-columns: 1fr 1fr; }
+      .footer-top { grid-template-columns: 1fr; }
+      .amounts { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="index.html" class="logo-wrap" style="text-decoration:none;">
+    <svg width="40" height="40" viewBox="0 0 44 44" fill="none">
+      <path d="M22 2L38 10V28C38 35 30 41 22 43C14 41 6 35 6 28V10L22 2Z" fill="#F59E0B" opacity="0.18" stroke="#F59E0B" stroke-width="1.5"/>
+      <path d="M15 17H27M15 22H24M15 27H27" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
+      <path d="M27 17L29.5 22L27 27" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div class="logo-txt">The Excel Foundation<span>Raising Excellence · Changing Lives</span></div>
+  </a>
+  <nav class="nav-links" id="nav-links">
+    <a href="#">About</a>
+    <a href="#">Programs</a>
+    <a href="#">Impact</a>
+    <a href="#">Reports</a>
+    <a href="events.html" style="color:#F59E0B;">Events</a>
+  </nav>
+  <a href="donate.html" class="nav-cta">Donate now</a>
+  <button class="nav-hamburger" onclick="document.getElementById('nav-links').classList.toggle('open')" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <div class="hero-tag">
+      <svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="#F59E0B"/></svg>
+      Empowering Communities Since 2012
+    </div>
+    <h1>Every child deserves a chance to <em>excel.</em></h1>
+    <p>The Excel Foundation invests in education, healthcare, and opportunity for underserved children and families across Africa — with full transparency and measurable impact.</p>
+    <div class="hero-btns">
+      <a href="#programs" class="btn-gold">Explore our programs</a>
+      <a href="#impact" class="btn-white-outline">See our impact</a>
+    </div>
+  </div>
+  <div class="hero-img-grid">
+    <div class="img-card tall">
+      <div class="img-placeholder c1" style="min-height:260px;">
+        <!-- Replace this SVG with a real <img src="kids-education.jpg"> -->
+        <svg width="80" height="80" viewBox="0 0 80 80">
+          <circle cx="40" cy="22" r="9" fill="rgba(255,255,255,0.6)"/>
+          <ellipse cx="40" cy="50" rx="14" ry="10" fill="rgba(255,255,255,0.5)"/>
+          <circle cx="22" cy="34" r="7" fill="rgba(255,255,255,0.4)"/>
+          <ellipse cx="22" cy="52" rx="10" ry="8" fill="rgba(255,255,255,0.3)"/>
+          <circle cx="58" cy="34" r="7" fill="rgba(255,255,255,0.4)"/>
+          <ellipse cx="58" cy="52" rx="10" ry="8" fill="rgba(255,255,255,0.3)"/>
+        </svg>
+        <div class="img-caption">Children's Education Program</div>
+      </div>
+    </div>
+    <div class="img-card">
+      <div class="img-placeholder c2" style="min-height:120px;">
+        <!-- Replace with <img src="health.jpg"> -->
+        <svg width="36" height="36" viewBox="0 0 36 36"><circle cx="18" cy="10" r="7" fill="rgba(255,255,255,0.5)"/><ellipse cx="18" cy="26" rx="12" ry="8" fill="rgba(255,255,255,0.4)"/></svg>
+        <div class="img-caption">Community Health</div>
+      </div>
+    </div>
+    <div class="img-card">
+      <div class="img-placeholder c3" style="min-height:120px;">
+        <!-- Replace with <img src="empowerment.jpg"> -->
+        <svg width="36" height="36" viewBox="0 0 36 36"><rect x="4" y="18" width="6" height="12" rx="2" fill="rgba(255,255,255,0.5)"/><rect x="15" y="12" width="6" height="18" rx="2" fill="rgba(255,255,255,0.6)"/><rect x="26" y="6" width="6" height="24" rx="2" fill="rgba(255,255,255,0.7)"/></svg>
+        <div class="img-caption">Youth Empowerment</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-item"><div class="stat-n">12K+</div><div class="stat-l">Children reached</div></div>
+  <div class="stat-item"><div class="stat-n">19</div><div class="stat-l">Communities served</div></div>
+  <div class="stat-item"><div class="stat-n">₦2.4B</div><div class="stat-l">Invested since 2012</div></div>
+  <div class="stat-item"><div class="stat-n">94%</div><div class="stat-l">Program efficiency</div></div>
+</div>
+
+<!-- PROGRAMS -->
+<section class="section" id="programs" style="background:#fafafa;">
+  <div class="section-badge badge-teal">What we do</div>
+  <div class="section-title">Our programs</div>
+  <div class="section-sub">Three pillars of change — each designed to create lasting impact in the communities we serve.</div>
+  <div class="programs-grid">
+    <div class="prog-card">
+      <div class="prog-header edu">
+        <div class="prog-icon-wrap">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M2 6L9 2L16 6V12L9 16L2 12V6Z" stroke="white" stroke-width="1.2"/><path d="M9 6V12M6 8L9 6L12 8" stroke="white" stroke-width="1" stroke-linecap="round"/></svg>
+        </div>
+        <div class="prog-title-h">Education Access</div>
+      </div>
+      <div class="prog-body">
+        <div class="prog-desc">Scholarships, school infrastructure, learning materials, and teacher training for underserved children across Nigeria.</div>
+        <a href="#" class="prog-link">Learn more →</a>
+      </div>
+    </div>
+    <div class="prog-card">
+      <div class="prog-header health">
+        <div class="prog-icon-wrap">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2C9 2 3 5 3 10C3 13.3 5.7 16 9 16C12.3 16 15 13.3 15 10C15 5 9 2 9 2Z" stroke="white" stroke-width="1.2"/><path d="M7 9H11M9 7V11" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg>
+        </div>
+        <div class="prog-title-h">Community Health</div>
+      </div>
+      <div class="prog-body">
+        <div class="prog-desc">Mobile clinics, vaccination drives, maternal health support, and nutrition programs reaching remote communities.</div>
+        <a href="#" class="prog-link" style="color:#185FA5;">Learn more →</a>
+      </div>
+    </div>
+    <div class="prog-card">
+      <div class="prog-header empower">
+        <div class="prog-icon-wrap">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="7" r="3" stroke="white" stroke-width="1.2"/><path d="M4 16C4 13.2 6.2 11 9 11C11.8 11 14 13.2 14 16" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg>
+        </div>
+        <div class="prog-title-h">Youth Empowerment</div>
+      </div>
+      <div class="prog-body">
+        <div class="prog-desc">Vocational training, micro-grants, mentorship, and entrepreneurship bootcamps for young people aged 16–30.</div>
+        <a href="#" class="prog-link" style="color:#854F0B;">Learn more →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- IMPACT -->
+<section class="impact-section" id="impact">
+  <div class="impact-inner">
+    <div>
+      <div class="section-badge" style="background:rgba(245,158,11,0.15);color:#F59E0B;">Real stories</div>
+      <div class="section-title" style="color:#fff;">Lives we've changed</div>
+      <div style="font-size:14px;color:rgba(255,255,255,0.55);line-height:1.7;margin-bottom:28px;">Every number has a name. These are just three of the thousands of lives transformed through your generosity.</div>
+      <div class="progress-wrap">
+        <div class="progress-row"><span>2026 annual goal</span><span>₦1.8B / ₦2B</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:88%;background:#F59E0B;"></div></div>
+        <div class="progress-row"><span>Children scholarship fund</span><span>1,240 / 1,500</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:83%;background:#1D9E75;"></div></div>
+        <div class="progress-row"><span>Health clinic visits</span><span>9,200 / 10,000</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:92%;background:#378ADD;"></div></div>
+      </div>
+    </div>
+    <div class="impact-stories">
+      <div class="story-card">
+        <div class="story-avatar av1">AM</div>
+        <div>
+          <div class="story-name">Amara, 14</div>
+          <div class="story-text">Thanks to the Excel Foundation scholarship, I'm now top of my class. I want to be a doctor and come back to help my village.</div>
+          <div class="story-loc">Scholarship recipient · Bayelsa State</div>
+        </div>
+      </div>
+      <div class="story-card">
+        <div class="story-avatar av2">FO</div>
+        <div>
+          <div class="story-name">Fatima, 28</div>
+          <div class="story-text">The micro-grant helped me start my tailoring business. I now employ four other women in my community.</div>
+          <div class="story-loc">Youth empowerment graduate · Kano</div>
+        </div>
+      </div>
+      <div class="story-card">
+        <div class="story-avatar av3">EJ</div>
+        <div>
+          <div class="story-name">Emmanuel, 9</div>
+          <div class="story-text">Before the mobile clinic came, I had never seen a doctor. Now I'm healthy and going to school every day.</div>
+          <div class="story-loc">Health program beneficiary · Rivers State</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DONATE -->
+<section class="donate-section" id="donate">
+  <div class="donate-inner">
+    <div>
+      <div class="section-badge badge-amber">Support our work</div>
+      <div class="section-title">Make a difference today</div>
+      <div class="section-sub">Every naira goes directly to a child, a family, a community. We publish full financial reports quarterly.</div>
+      <div style="margin-top:8px;">
+        <div class="alloc-row-d"><div class="alloc-label-d">Programs</div><div class="alloc-bar-d"><div class="alloc-fill-d" style="width:94%;background:#1D9E75;"></div></div><div class="alloc-pct-d">94%</div></div>
+        <div class="alloc-row-d"><div class="alloc-label-d">Administration</div><div class="alloc-bar-d"><div class="alloc-fill-d" style="width:4%;background:#888780;"></div></div><div class="alloc-pct-d">4%</div></div>
+        <div class="alloc-row-d"><div class="alloc-label-d">Fundraising</div><div class="alloc-bar-d"><div class="alloc-fill-d" style="width:2%;background:#B4B2A9;"></div></div><div class="alloc-pct-d">2%</div></div>
+      </div>
+    </div>
+    <div class="donate-card">
+      <div class="donate-title">Choose your contribution</div>
+      <div class="amounts" id="amt-group">
+        <div class="amt" onclick="selectAmt(this,'5,000')">₦5K</div>
+        <div class="amt" onclick="selectAmt(this,'10,000')">₦10K</div>
+        <div class="amt active" onclick="selectAmt(this,'25,000')">₦25K</div>
+        <div class="amt" onclick="selectAmt(this,'custom')">Custom</div>
+      </div>
+      <div class="donate-impact" id="donate-impact">₦25,000 provides school supplies and uniforms for one child for a full academic year.</div>
+      <button class="btn-donate" onclick="window.location.href='donate.html'">Donate ₦25,000 securely →</button>
+      <div style="font-size:11px;color:#888;margin-top:12px;text-align:center;">All donations are tax-deductible. CAC registered NGO.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a href="index.html" class="logo-wrap" style="text-decoration:none;display:flex;">
+        <svg width="32" height="32" viewBox="0 0 44 44" fill="none"><path d="M22 2L38 10V28C38 35 30 41 22 43C14 41 6 35 6 28V10L22 2Z" fill="#F59E0B" opacity="0.2" stroke="#F59E0B" stroke-width="1.5"/><path d="M15 17H27M15 22H24M15 27H27" stroke="#fff" stroke-width="2" stroke-linecap="round"/><path d="M27 17L29.5 22L27 27" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="logo-txt" style="margin-left:10px;">The Excel Foundation<span>Raising Excellence · Changing Lives</span></div>
+      </a>
+      <p>A non-profit committed to building a better future through education, healthcare, and youth empowerment.</p>
+    </div>
+    <div>
+      <div class="footer-col-title">Programs</div>
+      <div class="footer-col">
+        <a href="#">Education access</a>
+        <a href="#">Community health</a>
+        <a href="#">Youth empowerment</a>
+        <a href="#">Emergency relief</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Organisation</div>
+      <div class="footer-col">
+        <a href="#">About us</a>
+        <a href="#">Our team</a>
+        <a href="#">Annual reports</a>
+        <a href="#">Partners</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Get involved</div>
+      <div class="footer-col">
+        <a href="donate.html">Donate</a>
+        <a href="#">Volunteer</a>
+        <a href="#">Corporate giving</a>
+        <a href="#">Contact us</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 The Excel Foundation · CAC Registered NGO · All rights reserved</div>
+    <div class="footer-links-b">
+      <a href="#">Privacy policy</a>
+      <a href="#">Terms of use</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const impacts = {
+    '5,000': '₦5,000 provides a child with textbooks for an entire school term.',
+    '10,000': '₦10,000 covers a child\'s school fees for one term.',
+    '25,000': '₦25,000 provides school supplies and uniforms for one child for a full academic year.',
+    'custom': 'Enter any amount — every naira makes a real difference.'
+  };
+  function selectAmt(el, val) {
+    document.querySelectorAll('.amt').forEach(a => a.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('donate-impact').textContent = impacts[val] || impacts['25,000'];
+  }
+</script>
+</body>
+</html>
