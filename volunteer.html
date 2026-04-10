@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Volunteer — The Excel Foundation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--navy:#1a1a2e;--gold:#F59E0B;--teal:#1D9E75;--blue:#185FA5;--light:#fafafa;--border:#e5e5e5;--font-display:'Playfair Display',Georgia,serif;--font-body:'DM Sans','Segoe UI',sans-serif;}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:var(--font-body);background:#fff;color:var(--navy);}
+    nav{display:flex;justify-content:space-between;align-items:center;padding:16px 40px;background:var(--navy);position:sticky;top:0;z-index:100;}
+    .logo-wrap{display:flex;align-items:center;gap:10px;text-decoration:none;}
+    .logo-txt{color:#fff;font-size:13px;font-weight:600;letter-spacing:0.05em;line-height:1.3;}
+    .logo-txt span{color:var(--gold);font-size:10px;display:block;font-weight:400;letter-spacing:0.1em;}
+    .nav-links{display:flex;gap:28px;}
+    .nav-links a{font-size:13px;color:rgba(255,255,255,0.65);text-decoration:none;transition:color .2s;}
+    .nav-links a:hover{color:#fff;}
+    .nav-links a.active{color:var(--gold);font-weight:600;}
+    .nav-cta{font-size:13px;font-weight:600;padding:10px 22px;background:var(--gold);color:var(--navy);border:none;border-radius:8px;cursor:pointer;text-decoration:none;}
+    .hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;}
+    .hamburger span{display:block;width:22px;height:2px;background:#fff;border-radius:2px;}
+
+    .page-hero{background:var(--navy);padding:64px 40px 56px;}
+    .hero-label{font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;font-weight:600;}
+    .hero-title{font-family:var(--font-display);font-size:46px;font-weight:700;color:#fff;line-height:1.15;margin-bottom:16px;}
+    .hero-title em{color:var(--gold);font-style:normal;}
+    .hero-sub{font-size:15px;color:rgba(255,255,255,0.6);line-height:1.75;max-width:560px;}
+
+    /* WHY VOLUNTEER */
+    .why{padding:64px 40px;background:var(--light);border-bottom:0.5px solid var(--border);}
+    .why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:36px;}
+    .why-card{background:#fff;border:0.5px solid var(--border);border-radius:14px;padding:28px;}
+    .why-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;}
+    .wi-gold{background:rgba(245,158,11,0.12);}
+    .wi-teal{background:rgba(29,158,117,0.12);}
+    .wi-blue{background:rgba(24,95,165,0.12);}
+    .why-card h3{font-size:15px;font-weight:600;margin-bottom:8px;}
+    .why-card p{font-size:13px;color:#5F5E5A;line-height:1.7;}
+    .section-label{font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;font-weight:600;}
+    .section-title{font-family:var(--font-display);font-size:32px;font-weight:700;margin-bottom:10px;}
+    .section-sub{font-size:15px;color:#5F5E5A;line-height:1.7;max-width:520px;}
+
+    /* FORM SECTION */
+    .form-section{padding:72px 40px;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;}
+    .form-info h2{font-family:var(--font-display);font-size:30px;font-weight:700;margin-bottom:14px;}
+    .form-info p{font-size:14px;color:#5F5E5A;line-height:1.8;margin-bottom:20px;}
+    .expectations{margin-top:28px;}
+    .exp-item{display:flex;gap:14px;align-items:flex-start;margin-bottom:16px;}
+    .exp-dot{width:28px;height:28px;border-radius:50%;background:rgba(245,158,11,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+    .exp-title{font-size:13px;font-weight:600;margin-bottom:3px;}
+    .exp-desc{font-size:12px;color:#5F5E5A;line-height:1.6;}
+
+    /* FORM CARD */
+    .form-card{background:#fff;border:0.5px solid var(--border);border-radius:16px;padding:36px;}
+    .form-card h3{font-size:18px;font-weight:700;margin-bottom:6px;}
+    .form-card-sub{font-size:13px;color:#888;margin-bottom:28px;}
+    .form-row{margin-bottom:18px;}
+    .form-label{font-size:12px;font-weight:600;color:var(--navy);margin-bottom:6px;display:block;}
+    .form-label span{color:#E24B4A;margin-left:2px;}
+    .form-input{width:100%;padding:12px 14px;border:0.5px solid var(--border);border-radius:8px;font-size:14px;color:var(--navy);font-family:var(--font-body);outline:none;transition:border-color .2s;}
+    .form-input:focus{border-color:var(--navy);}
+    .form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px;}
+    .form-select{width:100%;padding:12px 14px;border:0.5px solid var(--border);border-radius:8px;font-size:14px;color:var(--navy);font-family:var(--font-body);background:#fff;outline:none;appearance:none;cursor:pointer;}
+    .form-textarea{width:100%;padding:12px 14px;border:0.5px solid var(--border);border-radius:8px;font-size:14px;color:var(--navy);font-family:var(--font-body);outline:none;resize:vertical;min-height:100px;transition:border-color .2s;}
+    .form-textarea:focus{border-color:var(--navy);}
+
+    /* SKILLS CHECKBOXES */
+    .skills-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:6px;}
+    .skill-check{display:flex;align-items:center;gap:8px;cursor:pointer;}
+    .skill-check input{width:16px;height:16px;accent-color:var(--navy);cursor:pointer;}
+    .skill-check span{font-size:13px;color:var(--navy);}
+
+    /* AVAILABILITY PILLS */
+    .avail-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;}
+    .avail-pill{padding:8px 16px;border:0.5px solid var(--border);border-radius:100px;font-size:12px;font-weight:500;cursor:pointer;color:#888;background:#fff;transition:all .2s;font-family:var(--font-body);}
+    .avail-pill.selected{background:var(--navy);color:#fff;border-color:var(--navy);}
+
+    .privacy-note{font-size:12px;color:#888;line-height:1.6;margin-bottom:20px;}
+    .privacy-note a{color:var(--teal);}
+    .btn-submit{width:100%;padding:14px;background:var(--navy);color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;font-family:var(--font-body);transition:background .2s;}
+    .btn-submit:hover{background:#2d2d4e;}
+
+    /* SUCCESS MESSAGE */
+    .success-msg{display:none;background:#E1F5EE;border:0.5px solid #1D9E75;border-radius:12px;padding:24px;text-align:center;margin-top:20px;}
+    .success-msg h4{font-size:16px;font-weight:700;color:var(--teal);margin-bottom:6px;}
+    .success-msg p{font-size:13px;color:#0F6E56;}
+
+    footer{background:var(--navy);padding:32px 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+    .footer-copy{font-size:12px;color:rgba(255,255,255,0.35);}
+    .footer-links{display:flex;gap:20px;}
+    .footer-links a{font-size:12px;color:rgba(255,255,255,0.4);text-decoration:none;}
+    .footer-links a:hover{color:var(--gold);}
+
+    @media(max-width:768px){
+      nav{padding:14px 20px;}
+      .nav-links{display:none;}
+      .hamburger{display:flex;}
+      .nav-links.open{display:flex;flex-direction:column;position:absolute;top:56px;left:0;right:0;background:var(--navy);padding:20px 24px;gap:16px;border-top:0.5px solid rgba(255,255,255,0.1);z-index:99;}
+      .page-hero{padding:48px 20px 40px;}
+      .hero-title{font-size:30px;}
+      .why{padding:48px 20px;}
+      .why-grid{grid-template-columns:1fr;}
+      .form-section{grid-template-columns:1fr;padding:48px 20px;gap:36px;}
+      .form-row-2{grid-template-columns:1fr;}
+      .skills-grid{grid-template-columns:1fr;}
+      .form-card{padding:24px 20px;}
+      footer{padding:24px 20px;flex-direction:column;align-items:flex-start;}
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo-wrap">
+    <svg width="36" height="36" viewBox="0 0 44 44" fill="none">
+      <path d="M22 2L38 10V28C38 35 30 41 22 43C14 41 6 35 6 28V10L22 2Z" fill="#F59E0B" opacity="0.18" stroke="#F59E0B" stroke-width="1.5"/>
+      <path d="M15 17H27M15 22H24M15 27H27" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
+      <path d="M27 17L29.5 22L27 27" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div class="logo-txt">The Excel Foundation<span>Raising Excellence · Changing Lives</span></div>
+  </a>
+  <div class="nav-links" id="nav-links">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="programs.html">Programs</a>
+    <a href="volunteer.html" class="active">Volunteer</a>
+    <a href="media.html">Media</a>
+    <a href="donate.html">Donate</a>
+  </div>
+  <a href="donate.html" class="nav-cta">Donate now</a>
+  <button class="hamburger" onclick="document.getElementById('nav-links').classList.toggle('open')" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<section class="page-hero">
+  <div class="hero-label">Join the team</div>
+  <h1 class="hero-title">Volunteer with us.<br/><em>Serve with purpose.</em></h1>
+  <p class="hero-sub">Be part of a faith-driven movement changing lives across communities. Whether you have two hours or two days a month — there is a place for you here.</p>
+</section>
+
+<!-- WHY VOLUNTEER -->
+<section class="why">
+  <div class="section-label">Why volunteer?</div>
+  <div class="section-title">More than just helping out</div>
+  <div class="why-grid">
+    <div class="why-card">
+      <div class="why-icon wi-gold">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2L12.4 7.3L18 8.1L14 12L15 17.5L10 14.8L5 17.5L6 12L2 8.1L7.6 7.3L10 2Z" stroke="#F59E0B" stroke-width="1.2" fill="none"/></svg>
+      </div>
+      <h3>Make a tangible difference</h3>
+      <p>Your time and skills directly touch the lives of children, families, and communities who need it most. You will see the impact firsthand.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon wi-teal">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="4" stroke="#1D9E75" stroke-width="1.2" fill="none"/><path d="M3 18C3 14.7 6.1 12 10 12C13.9 12 17 14.7 17 18" stroke="#1D9E75" stroke-width="1.2" stroke-linecap="round" fill="none"/></svg>
+      </div>
+      <h3>Join a faith community</h3>
+      <p>Our volunteer team is a family — united by faith, driven by compassion. You will build meaningful relationships that last beyond any single event.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon wi-blue">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="3" width="16" height="14" rx="2" stroke="#185FA5" stroke-width="1.2" fill="none"/><path d="M2 7H18" stroke="#185FA5" stroke-width="1"/><path d="M7 3V7" stroke="#185FA5" stroke-width="1"/><path d="M13 3V7" stroke="#185FA5" stroke-width="1"/></svg>
+      </div>
+      <h3>Grow your skills</h3>
+      <p>From project management to community outreach, teaching to healthcare support — volunteering with us is an opportunity to develop and apply real skills.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FORM SECTION -->
+<section class="form-section">
+  <div class="form-info">
+    <div class="section-label">Sign up</div>
+    <h2>Ready to serve?<br/>Let's get started.</h2>
+    <p>Fill in the form and our volunteer coordinator will reach out within 3 working days to discuss how you can plug into our upcoming programs and events.</p>
+    <div class="expectations">
+      <div class="exp-item">
+        <div class="exp-dot">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7L5.5 10.5L12 3.5" stroke="#F59E0B" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <div>
+          <div class="exp-title">Flexible commitment</div>
+          <div class="exp-desc">We work around your schedule. As little as one event per quarter qualifies you as an active volunteer.</div>
+        </div>
+      </div>
+      <div class="exp-item">
+        <div class="exp-dot">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7L5.5 10.5L12 3.5" stroke="#F59E0B" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <div>
+          <div class="exp-title">Onboarding and orientation</div>
+          <div class="exp-desc">All new volunteers receive an orientation session before their first deployment so you are always confident and prepared.</div>
+        </div>
+      </div>
+      <div class="exp-item">
+        <div class="exp-dot">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7L5.5 10.5L12 3.5" stroke="#F59E0B" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <div>
+          <div class="exp-title">Volunteer certificate</div>
+          <div class="exp-desc">Active volunteers receive an official Excel Foundation certificate of service — recognised for CVs, NYSC records, and professional portfolios.</div>
+        </div>
+      </div>
+      <div class="exp-item">
+        <div class="exp-dot">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7L5.5 10.5L12 3.5" stroke="#F59E0B" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <div>
+          <div class="exp-title">All backgrounds welcome</div>
+          <div class="exp-desc">You do not need a specific qualification to volunteer — just a willing heart, reliable character, and the desire to serve.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="form-card">
+      <h3>Volunteer application</h3>
+      <div class="form-card-sub">Takes less than 3 minutes to complete</div>
+
+      <div class="form-row-2">
+        <div class="form-row" style="margin-bottom:0;">
+          <label class="form-label">First name <span>*</span></label>
+          <input class="form-input" id="v-fname" type="text" placeholder="e.g. Chinyere" required/>
+        </div>
+        <div class="form-row" style="margin-bottom:0;">
+          <label class="form-label">Last name <span>*</span></label>
+          <input class="form-input" id="v-lname" type="text" placeholder="e.g. Okafor" required/>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label class="form-label">Email address <span>*</span></label>
+        <input class="form-input" id="v-email" type="email" placeholder="you@email.com" required/>
+      </div>
+
+      <div class="form-row">
+        <label class="form-label">Phone number <span>*</span></label>
+        <input class="form-input" id="v-phone" type="tel" placeholder="e.g. 0801 234 5678" required/>
+      </div>
+
+      <div class="form-row">
+        <label class="form-label">Location (State / City) <span>*</span></label>
+        <input class="form-input" id="v-location" type="text" placeholder="e.g. Lagos, Lagos State"/>
+      </div>
+
+      <div class="form-row">
+        <label class="form-label">Skills & areas of interest <span>*</span></label>
+        <div class="skills-grid" id="skills-group">
+          <label class="skill-check"><input type="checkbox" value="Teaching / Education"/> <span>Teaching / Education</span></label>
+          <label class="skill-check"><input type="checkbox" value="Healthcare / First Aid"/> <span>Healthcare / First Aid</span></label>
+          <label class="skill-check"><input type="checkbox" value="Event coordination"/> <span>Event coordination</span></label>
+          <label class="skill-check"><input type="checkbox" value="Photography / Videography"/> <span>Photography / Videography</span></label>
+          <label class="skill-check"><input type="checkbox" value="Social media / Marketing"/> <span>Social media / Marketing</span></label>
+          <label class="skill-check"><input type="checkbox" value="Logistics / Procurement"/> <span>Logistics / Procurement</span></label>
+          <label class="skill-check"><input type="checkbox" value="Counselling / Welfare"/> <span>Counselling / Welfare</span></label>
+          <label class="skill-check"><input type="checkbox" value="General volunteering"/> <span>General volunteering</span></label>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label class="form-label">Availability <span>*</span></label>
+        <div class="avail-row" id="avail-group">
+          <button type="button" class="avail-pill" onclick="toggleAvail(this)">Weekdays</button>
+          <button type="button" class="avail-pill" onclick="toggleAvail(this)">Weekends</button>
+          <button type="button" class="avail-pill" onclick="toggleAvail(this)">Public holidays</button>
+          <button type="button" class="avail-pill" onclick="toggleAvail(this)">Event-based only</button>
+          <button type="button" class="avail-pill" onclick="toggleAvail(this)">Flexible / anytime</button>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label class="form-label">Why do you want to volunteer with The Excel Foundation?</label>
+        <textarea class="form-textarea" id="v-motivation" placeholder="Tell us a little about yourself and your motivation to serve..."></textarea>
+      </div>
+
+      <div class="form-row">
+        <label class="form-label">How did you hear about us?</label>
+        <select class="form-select" id="v-source">
+          <option value="">Select an option</option>
+          <option>Social media (Instagram / Facebook)</option>
+          <option>Friend or family referral</option>
+          <option>Church or faith community</option>
+          <option>Website / Google search</option>
+          <option>Attended one of our events</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <div class="privacy-note">By submitting this form, you agree that The Excel Foundation may store and use your details to contact you about volunteering opportunities. We will never share your information with third parties. See our <a href="#">privacy policy</a>.</div>
+
+      <button class="btn-submit" onclick="submitForm()">Submit application →</button>
+
+      <div class="success-msg" id="success-msg">
+        <h4>Application received!</h4>
+        <p>Thank you for stepping up to serve. Our volunteer coordinator will reach out within 3 working days. Welcome to the Excel Foundation family!</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-copy">© 2026 The Excel Foundation · CAC Registered NGO</div>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="programs.html">Programs</a>
+    <a href="donate.html">Donate</a>
+    <a href="media.html">Media</a>
+  </div>
+</footer>
+
+<script>
+  function toggleAvail(el) { el.classList.toggle('selected'); }
+
+  function submitForm() {
+    const fname = document.getElementById('v-fname').value.trim();
+    const lname = document.getElementById('v-lname').value.trim();
+    const email = document.getElementById('v-email').value.trim();
+    const phone = document.getElementById('v-phone').value.trim();
+    const skills = Array.from(document.querySelectorAll('#skills-group input:checked')).map(i => i.value);
+    const avail = Array.from(document.querySelectorAll('#avail-group .avail-pill.selected')).map(b => b.textContent);
+
+    if (!fname || !lname) { alert('Please enter your full name.'); return; }
+    if (!email || !email.includes('@')) { alert('Please enter a valid email address.'); return; }
+    if (!phone) { alert('Please enter your phone number.'); return; }
+    if (skills.length === 0) { alert('Please select at least one skill or area of interest.'); return; }
+    if (avail.length === 0) { alert('Please select at least one availability option.'); return; }
+
+    /* 
+      TO CONNECT THIS FORM TO A BACKEND:
+      Replace the alert below with a fetch() POST to your server, 
+      Google Forms, Formspree (https://formspree.io), or Netlify Forms.
+      
+      Example with Formspree:
+      Change the button to: <form action="https://formspree.io/f/YOUR_ID" method="POST">
+      
+      Example with fetch:
+      fetch('/api/volunteer', { method:'POST', body: JSON.stringify({fname,lname,email,phone,skills,avail}) })
+    */
+
+    document.getElementById('success-msg').style.display = 'block';
+    document.querySelector('.btn-submit').style.display = 'none';
+    window.scrollTo({ top: document.getElementById('success-msg').offsetTop - 100, behavior: 'smooth' });
+  }
+
+  document.querySelector('.hamburger').addEventListener('click', () => {
+    document.getElementById('nav-links').classList.toggle('open');
+  });
+</script>
+</body>
+</html>

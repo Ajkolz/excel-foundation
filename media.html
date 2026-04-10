@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Media — The Excel Foundation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--navy:#1a1a2e;--gold:#F59E0B;--teal:#1D9E75;--blue:#185FA5;--amber:#854F0B;--coral:#993C1D;--light:#fafafa;--border:#e5e5e5;--font-display:'Playfair Display',Georgia,serif;--font-body:'DM Sans','Segoe UI',sans-serif;}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:var(--font-body);background:#fff;color:var(--navy);}
+    nav{display:flex;justify-content:space-between;align-items:center;padding:16px 40px;background:var(--navy);position:sticky;top:0;z-index:100;}
+    .logo-wrap{display:flex;align-items:center;gap:10px;text-decoration:none;}
+    .logo-txt{color:#fff;font-size:13px;font-weight:600;letter-spacing:0.05em;line-height:1.3;}
+    .logo-txt span{color:var(--gold);font-size:10px;display:block;font-weight:400;letter-spacing:0.1em;}
+    .nav-links{display:flex;gap:28px;}
+    .nav-links a{font-size:13px;color:rgba(255,255,255,0.65);text-decoration:none;transition:color .2s;}
+    .nav-links a:hover{color:#fff;}
+    .nav-links a.active{color:var(--gold);font-weight:600;}
+    .nav-cta{font-size:13px;font-weight:600;padding:10px 22px;background:var(--gold);color:var(--navy);border:none;border-radius:8px;cursor:pointer;text-decoration:none;}
+    .hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;}
+    .hamburger span{display:block;width:22px;height:2px;background:#fff;border-radius:2px;}
+
+    .page-hero{background:var(--navy);padding:64px 40px 56px;}
+    .hero-label{font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;font-weight:600;}
+    .hero-title{font-family:var(--font-display);font-size:46px;font-weight:700;color:#fff;line-height:1.15;margin-bottom:16px;}
+    .hero-title em{color:var(--gold);font-style:normal;}
+    .hero-sub{font-size:15px;color:rgba(255,255,255,0.6);line-height:1.75;max-width:560px;}
+
+    /* FILTER */
+    .filter-bar{background:#fff;border-bottom:0.5px solid var(--border);padding:0 40px;display:flex;gap:0;overflow-x:auto;}
+    .filter-tab{font-size:13px;font-weight:500;padding:18px 22px;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;color:#888;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:var(--font-body);}
+    .filter-tab.active{color:var(--navy);border-bottom-color:var(--gold);font-weight:600;}
+    .filter-tab:hover{color:var(--navy);}
+
+    /* PHOTO GALLERY */
+    .gallery-section{padding:64px 40px;}
+    .section-label{font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;font-weight:600;}
+    .section-title{font-family:var(--font-display);font-size:32px;font-weight:700;margin-bottom:10px;}
+    .section-sub{font-size:15px;color:#5F5E5A;line-height:1.7;margin-bottom:36px;}
+
+    .photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+    .photo-card{border-radius:12px;overflow:hidden;position:relative;cursor:pointer;}
+    .photo-card:hover .photo-overlay{opacity:1;}
+    .photo-placeholder{width:100%;display:flex;align-items:center;justify-content:center;position:relative;}
+    .photo-placeholder.tall{height:340px;}
+    .photo-placeholder.medium{height:200px;}
+    .photo-placeholder.short{height:160px;}
+    .pp-edu{background:#1D9E75;}
+    .pp-health{background:#185FA5;}
+    .pp-youth{background:#854F0B;}
+    .pp-community{background:#993C1D;}
+    .pp-event{background:#534AB7;}
+    .pp-bts{background:#0F6E56;}
+    .photo-overlay{position:absolute;inset:0;background:rgba(26,26,46,0.7);display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;transition:opacity .25s;gap:8px;}
+    .photo-overlay-label{font-size:12px;color:rgba(255,255,255,0.75);letter-spacing:0.08em;text-transform:uppercase;}
+    .photo-overlay-title{font-size:14px;font-weight:600;color:#fff;text-align:center;padding:0 16px;}
+    .photo-tag{position:absolute;top:12px;left:12px;background:rgba(26,26,46,0.75);color:#fff;font-size:10px;padding:4px 10px;border-radius:100px;font-weight:500;}
+    .photo-upload-hint{display:flex;flex-direction:column;align-items:center;gap:10px;}
+    .photo-upload-hint svg{opacity:0.35;}
+    .photo-upload-hint span{font-size:11px;color:rgba(255,255,255,0.5);text-align:center;max-width:100px;line-height:1.4;}
+
+    .load-more-wrap{text-align:center;margin-top:32px;}
+    .btn-load{font-size:13px;font-weight:600;padding:12px 32px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--navy);cursor:pointer;font-family:var(--font-body);transition:all .2s;}
+    .btn-load:hover{background:var(--navy);color:#fff;border-color:var(--navy);}
+
+    /* VIDEO SECTION */
+    .video-section{padding:64px 40px;background:var(--navy);}
+    .video-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:36px;}
+    .video-card{border-radius:14px;overflow:hidden;cursor:pointer;}
+    .video-thumb{height:160px;display:flex;align-items:center;justify-content:center;position:relative;}
+    .vt-edu{background:#0F6E56;}
+    .vt-event{background:#26215C;}
+    .vt-community{background:#854F0B;}
+    .play-btn{width:52px;height:52px;border-radius:50%;background:rgba(245,158,11,0.9);display:flex;align-items:center;justify-content:center;transition:transform .2s;}
+    .video-card:hover .play-btn{transform:scale(1.1);}
+    .video-duration{position:absolute;bottom:10px;right:10px;background:rgba(0,0,0,0.6);color:#fff;font-size:10px;padding:3px 7px;border-radius:4px;font-weight:500;}
+    .video-body{background:#fff;border:0.5px solid rgba(255,255,255,0.1);padding:16px;}
+    .video-tag{font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:4px;}
+    .video-title{font-size:14px;font-weight:600;color:#fff;line-height:1.35;}
+    .video-date{font-size:11px;color:rgba(255,255,255,0.4);margin-top:6px;}
+    .video-card .video-body{background:rgba(255,255,255,0.04);border:0.5px solid rgba(255,255,255,0.06);}
+
+    /* UPLOAD CTA */
+    .upload-cta{padding:64px 40px;background:var(--light);text-align:center;border-top:0.5px solid var(--border);}
+    .upload-cta h2{font-family:var(--font-display);font-size:28px;font-weight:700;margin-bottom:12px;}
+    .upload-cta p{font-size:14px;color:#5F5E5A;line-height:1.7;max-width:480px;margin:0 auto 24px;}
+    .btn-gold{display:inline-block;padding:13px 28px;background:var(--gold);color:var(--navy);font-size:14px;font-weight:700;border-radius:8px;text-decoration:none;border:none;cursor:pointer;font-family:var(--font-body);}
+    .btn-outline{display:inline-block;padding:13px 28px;background:#fff;color:var(--navy);font-size:14px;font-weight:600;border-radius:8px;text-decoration:none;border:1px solid var(--border);margin-left:12px;cursor:pointer;font-family:var(--font-body);}
+
+    /* LIGHTBOX */
+    .lightbox{display:none;position:fixed;inset:0;background:rgba(10,10,20,0.95);z-index:1000;align-items:center;justify-content:center;}
+    .lightbox.open{display:flex;}
+    .lightbox-inner{max-width:800px;width:90%;text-align:center;}
+    .lightbox-img{width:100%;max-height:500px;object-fit:contain;border-radius:8px;background:var(--navy);}
+    .lightbox-caption{font-size:13px;color:rgba(255,255,255,0.6);margin-top:12px;}
+    .lightbox-close{position:fixed;top:24px;right:24px;background:none;border:none;color:#fff;font-size:28px;cursor:pointer;line-height:1;}
+
+    footer{background:var(--navy);padding:32px 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+    .footer-copy{font-size:12px;color:rgba(255,255,255,0.35);}
+    .footer-links{display:flex;gap:20px;}
+    .footer-links a{font-size:12px;color:rgba(255,255,255,0.4);text-decoration:none;}
+    .footer-links a:hover{color:var(--gold);}
+
+    @media(max-width:768px){
+      nav{padding:14px 20px;}
+      .nav-links{display:none;}
+      .hamburger{display:flex;}
+      .nav-links.open{display:flex;flex-direction:column;position:absolute;top:56px;left:0;right:0;background:var(--navy);padding:20px 24px;gap:16px;border-top:0.5px solid rgba(255,255,255,0.1);z-index:99;}
+      .page-hero{padding:48px 20px 40px;}
+      .hero-title{font-size:30px;}
+      .filter-bar{padding:0 20px;}
+      .gallery-section,.video-section,.upload-cta{padding:48px 20px;}
+      .photo-grid{grid-template-columns:1fr 1fr;}
+      .video-grid{grid-template-columns:1fr;}
+      .photo-placeholder.tall{height:220px;}
+      footer{padding:24px 20px;flex-direction:column;align-items:flex-start;}
+    }
+    @media(max-width:480px){
+      .photo-grid{grid-template-columns:1fr;}
+      .hero-title{font-size:26px;}
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo-wrap">
+    <svg width="36" height="36" viewBox="0 0 44 44" fill="none">
+      <path d="M22 2L38 10V28C38 35 30 41 22 43C14 41 6 35 6 28V10L22 2Z" fill="#F59E0B" opacity="0.18" stroke="#F59E0B" stroke-width="1.5"/>
+      <path d="M15 17H27M15 22H24M15 27H27" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
+      <path d="M27 17L29.5 22L27 27" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div class="logo-txt">The Excel Foundation<span>Raising Excellence · Changing Lives</span></div>
+  </a>
+  <div class="nav-links" id="nav-links">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="programs.html">Programs</a>
+    <a href="volunteer.html">Volunteer</a>
+    <a href="media.html" class="active">Media</a>
+    <a href="donate.html">Donate</a>
+  </div>
+  <a href="donate.html" class="nav-cta">Donate now</a>
+  <button class="hamburger" onclick="document.getElementById('nav-links').classList.toggle('open')" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<section class="page-hero">
+  <div class="hero-label">See the impact</div>
+  <h1 class="hero-title">Every picture tells<br/><em>a story of change.</em></h1>
+  <p class="hero-sub">Browse our collection of project photos, event highlights, and field videos — a visual record of lives transformed across communities.</p>
+</section>
+
+<div class="filter-bar">
+  <button class="filter-tab active" onclick="filterMedia('all',this)">All media</button>
+  <button class="filter-tab" onclick="filterMedia('education',this)">Education</button>
+  <button class="filter-tab" onclick="filterMedia('health',this)">Health</button>
+  <button class="filter-tab" onclick="filterMedia('youth',this)">Youth</button>
+  <button class="filter-tab" onclick="filterMedia('community',this)">Community</button>
+  <button class="filter-tab" onclick="filterMedia('events',this)">Events</button>
+</div>
+
+<!-- PHOTO GALLERY -->
+<section class="gallery-section" id="gallery">
+  <div class="section-label">Photo gallery</div>
+  <div class="section-title">Project pictures</div>
+  <div class="section-sub">Add your photos by replacing the placeholder blocks below with &lt;img&gt; tags. See the README for instructions.</div>
+
+  <div class="photo-grid" id="photo-grid">
+
+    <!-- SLOT 1 — tall featured -->
+    <div class="photo-card" data-cat="education" style="grid-row:span 2;" onclick="openLightbox('Back to School 2025 — Distribution Day','Education Program')">
+      <div class="photo-placeholder pp-edu tall" style="height:100%;min-height:340px;">
+        <!-- REPLACE WITH: <img src="images/back-to-school.jpg" alt="Back to School" style="width:100%;height:100%;object-fit:cover;"> -->
+        <div class="photo-upload-hint">
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><rect x="2" y="8" width="32" height="22" rx="3" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/><circle cx="13" cy="17" r="4" stroke="rgba(255,255,255,0.4)" stroke-width="1"/><path d="M2 26L11 18L16 23L22 16L34 26" stroke="rgba(255,255,255,0.4)" stroke-width="1.2" fill="none"/></svg>
+          <span>Back to School 2025 — Distribution Day</span>
+        </div>
+        <div class="photo-tag">Education</div>
+        <div class="photo-overlay">
+          <div class="photo-overlay-label">Education</div>
+          <div class="photo-overlay-title">Back to School 2025 — Distribution Day</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLOT 2 -->
+    <div class="photo-card" data-cat="health" onclick="openLightbox('Mobile Health Clinic — Rivers State','Health Program')">
+      <div class="photo-placeholder pp-health medium">
+        <!-- REPLACE WITH: <img src="images/health-clinic.jpg" style="width:100%;height:100%;object-fit:cover;"> -->
+        <div class="photo-upload-hint">
+          <svg width="28" height="28" viewBox="0 0 36 36" fill="none"><rect x="2" y="8" width="32" height="22" rx="3" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/><circle cx="13" cy="17" r="4" stroke="rgba(255,255,255,0.4)" stroke-width="1"/></svg>
+          <span>Mobile Health Clinic</span>
+        </div>
+        <div class="photo-tag">Health</div>
+        <div class="photo-overlay"><div class="photo-overlay-label">Health</div><div class="photo-overlay-title">Mobile Health Clinic — Rivers State</div></div>
+      </div>
+    </div>
+
+    <!-- SLOT 3 -->
+    <div class="photo-card" data-cat="community" onclick="openLightbox('Community Outreach — Food Drive','Community Outreach')">
+      <div class="photo-placeholder pp-community medium">
+        <div class="photo-upload-hint">
+          <svg width="28" height="28" viewBox="0 0 36 36" fill="none"><rect x="2" y="8" width="32" height="22" rx="3" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/><circle cx="13" cy="17" r="4" stroke="rgba(255,255,255,0.4)" stroke-width="1"/></svg>
+          <span>Community Food Drive</span>
+        </div>
+        <div class="photo-tag">Community</div>
+        <div class="photo-overlay"><div class="photo-overlay-label">Community</div><div class="photo-overlay-title">Community Outreach — Food Drive</div></div>
+      </div>
+    </div>
+
+    <!-- SLOT 4 -->
+    <div class="photo-card" data-cat="youth" onclick="openLightbox('Youth Empowerment Workshop — Kano','Youth Empowerment')">
+      <div class="photo-placeholder pp-youth medium">
+        <div class="photo-upload-hint">
+          <svg width="28" height="28" viewBox="0 0 36 36" fill="none"><rect x="2" y="8" width="32" height="22" rx="3" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/><circle cx="13" cy="17" r="4" stroke="rgba(255,255,255,0.4)" stroke-width="1"/></svg>
+          <span>Youth Empowerment Workshop</span>
+        </div>
+        <div class="photo-tag">Youth</div>
+        <div class="photo-overlay"><div class="photo-overlay-label">Youth</div><div class="photo-overlay-title">Youth Empowerment Workshop — Kano</div></div>
+      </div>
+    </div>
+
+    <!-- SLOT 5 -->
+    <div class="photo-card" data-cat="events" onclick="openLightbox('Excel Excellence Gala 2025','Events')">
+      <div class="photo-placeholder pp-event medium">
+        <div class="photo-upload-hint">
+          <svg width="28" height="28" viewBox="0 0 36 36" fill="none"><rect x="2" y="8" width="32" height="22" rx="3" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/><circle cx="13" cy="17" r="4" stroke="rgba(255,255,255,0.4)" stroke-width="1"/></svg>
+          <span>Excellence Gala 2025</span>
+        </div>
+        <div class="photo-tag">Event</div>
+        <div class="photo-overlay"><div class="photo-overlay-label">Event</div><div class="photo-overlay-title">Excel Excellence Gala 2025</div></div>
+      </div>
+    </div>
+
+    <!-- SLOT 6 -->
+    <div class="photo-card" data-cat="education" onclick="openLightbox('Classroom Renovation — Bayelsa','Education Program')">
+      <div class="photo-placeholder pp-bts medium">
+        <div class="photo-upload-hint">
+          <svg width="28" height="28" viewBox="0 0 36 36" fill="none"><rect x="2" y="8" width="32" height="22" rx="3" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/><circle cx="13" cy="17" r="4" stroke="rgba(255,255,255,0.4)" stroke-width="1"/></svg>
+          <span>Classroom Renovation</span>
+        </div>
+        <div class="photo-tag">Education</div>
+        <div class="photo-overlay"><div class="photo-overlay-label">Education</div><div class="photo-overlay-title">Classroom Renovation — Bayelsa</div></div>
+      </div>
+    </div>
+
+    <!-- SLOT 7 -->
+    <div class="photo-card" data-cat="health" onclick="openLightbox('Vaccination Drive — Kano State','Health Program')">
+      <div class="photo-placeholder pp-health short">
+        <div class="photo-upload-hint">
+          <svg width="28" height="28" viewBox="0 0 36 36" fill="none"><rect x="2" y="8" width="32" height="22" rx="3" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/><circle cx="13" cy="17" r="4" stroke="rgba(255,255,255,0.4)" stroke-width="1"/></svg>
+          <span>Vaccination Drive</span>
+        </div>
+        <div class="photo-tag">Health</div>
+        <div class="photo-overlay"><div class="photo-overlay-label">Health</div><div class="photo-overlay-title">Vaccination Drive — Kano State</div></div>
+      </div>
+    </div>
+
+    <!-- SLOT 8 -->
+    <div class="photo-card" data-cat="community" onclick="openLightbox('Community Prayer Meeting','Community Outreach')">
+      <div class="photo-placeholder pp-community short">
+        <div class="photo-upload-hint">
+          <svg width="28" height="28" viewBox="0 0 36 36" fill="none"><rect x="2" y="8" width="32" height="22" rx="3" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/><circle cx="13" cy="17" r="4" stroke="rgba(255,255,255,0.4)" stroke-width="1"/></svg>
+          <span>Community Prayer</span>
+        </div>
+        <div class="photo-tag">Community</div>
+        <div class="photo-overlay"><div class="photo-overlay-label">Community</div><div class="photo-overlay-title">Community Prayer Meeting</div></div>
+      </div>
+    </div>
+
+    <!-- SLOT 9 -->
+    <div class="photo-card" data-cat="events" onclick="openLightbox('5K Run for Education 2025','Events')">
+      <div class="photo-placeholder pp-event short">
+        <div class="photo-upload-hint">
+          <svg width="28" height="28" viewBox="0 0 36 36" fill="none"><rect x="2" y="8" width="32" height="22" rx="3" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/><circle cx="13" cy="17" r="4" stroke="rgba(255,255,255,0.4)" stroke-width="1"/></svg>
+          <span>5K Run 2025</span>
+        </div>
+        <div class="photo-tag">Event</div>
+        <div class="photo-overlay"><div class="photo-overlay-label">Event</div><div class="photo-overlay-title">5K Run for Education 2025</div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="load-more-wrap">
+    <button class="btn-load">Load more photos</button>
+    <div style="font-size:12px;color:#aaa;margin-top:10px;">Add more photo cards above following the same pattern</div>
+  </div>
+</section>
+
+<!-- VIDEO SECTION -->
+<section class="video-section">
+  <div class="section-label" style="color:var(--gold);">Video records</div>
+  <div class="section-title" style="color:#fff;">Event & project videos</div>
+  <div style="font-size:14px;color:rgba(255,255,255,0.5);line-height:1.7;margin-bottom:0;max-width:520px;">Replace the video cards below with embeds from YouTube, Vimeo, or direct video files. See instructions in the README.</div>
+
+  <div class="video-grid">
+    <div class="video-card">
+      <div class="video-thumb vt-edu">
+        <!-- REPLACE WITH YouTube embed: <iframe width="100%" height="160" src="https://www.youtube.com/embed/VIDEO_ID" frameborder="0" allowfullscreen></iframe> -->
+        <div class="play-btn">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M5 3L15 9L5 15V3Z" fill="#1a1a2e"/></svg>
+        </div>
+        <div class="video-duration">Update duration</div>
+      </div>
+      <div class="video-body">
+        <div class="video-tag">Education</div>
+        <div class="video-title">Back to School 2025 — Full project recap</div>
+        <div class="video-date">[Update: date]</div>
+      </div>
+    </div>
+    <div class="video-card">
+      <div class="video-thumb vt-event">
+        <!-- REPLACE WITH YouTube embed -->
+        <div class="play-btn">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M5 3L15 9L5 15V3Z" fill="#1a1a2e"/></svg>
+        </div>
+        <div class="video-duration">Update duration</div>
+      </div>
+      <div class="video-body">
+        <div class="video-tag">Event</div>
+        <div class="video-title">Excel Excellence Gala 2025 — Highlights</div>
+        <div class="video-date">[Update: date]</div>
+      </div>
+    </div>
+    <div class="video-card">
+      <div class="video-thumb vt-community">
+        <!-- REPLACE WITH YouTube embed -->
+        <div class="play-btn">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M5 3L15 9L5 15V3Z" fill="#1a1a2e"/></svg>
+        </div>
+        <div class="video-duration">Update duration</div>
+      </div>
+      <div class="video-body">
+        <div class="video-tag">Community</div>
+        <div class="video-title">Community Outreach Day — Field report</div>
+        <div class="video-date">[Update: date]</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- UPLOAD CTA -->
+<section class="upload-cta">
+  <h2>Submit your photos & videos</h2>
+  <p>Were you at one of our events or projects? Share your photos and videos with the team — we'd love to feature them here.</p>
+  <a href="mailto:media@excelfoundation.org?subject=Media Submission" class="btn-gold">Submit media →</a>
+  <a href="volunteer.html" class="btn-outline">Join our team</a>
+</section>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <div class="lightbox-inner" onclick="event.stopPropagation()">
+    <!-- When you have real images, show them here. For now shows info. -->
+    <div style="background:var(--navy);border-radius:12px;padding:40px;color:#fff;text-align:center;">
+      <div style="font-size:11px;letter-spacing:0.1em;color:var(--gold);text-transform:uppercase;margin-bottom:12px;" id="lb-cat"></div>
+      <div style="font-family:var(--font-display);font-size:22px;font-weight:700;" id="lb-title"></div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.5);margin-top:12px;">Replace placeholder divs with &lt;img&gt; tags to display real photos here</div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-copy">© 2026 The Excel Foundation · CAC Registered NGO</div>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="programs.html">Programs</a>
+    <a href="donate.html">Donate</a>
+    <a href="volunteer.html">Volunteer</a>
+  </div>
+</footer>
+
+<script>
+  function filterMedia(cat, btn) {
+    document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('#photo-grid .photo-card').forEach(card => {
+      card.style.display = (cat === 'all' || card.dataset.cat === cat) ? 'block' : 'none';
+    });
+  }
+
+  function openLightbox(title, cat) {
+    document.getElementById('lb-title').textContent = title;
+    document.getElementById('lb-cat').textContent = cat;
+    document.getElementById('lightbox').classList.add('open');
+  }
+
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+  document.querySelector('.hamburger').addEventListener('click', () => {
+    document.getElementById('nav-links').classList.toggle('open');
+  });
+</script>
+</body>
+</html>

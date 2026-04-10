@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Programs — The Excel Foundation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --navy:#1a1a2e; --gold:#F59E0B; --teal:#1D9E75; --blue:#185FA5; --amber:#854F0B;
+      --coral:#993C1D; --light:#fafafa; --border:#e5e5e5;
+      --font-display:'Playfair Display',Georgia,serif;
+      --font-body:'DM Sans','Segoe UI',sans-serif;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:var(--font-body);background:#fff;color:var(--navy);}
+
+    /* NAV */
+    nav{display:flex;justify-content:space-between;align-items:center;padding:16px 40px;background:var(--navy);position:sticky;top:0;z-index:100;}
+    .logo-wrap{display:flex;align-items:center;gap:10px;text-decoration:none;}
+    .logo-txt{color:#fff;font-size:13px;font-weight:600;letter-spacing:0.05em;line-height:1.3;}
+    .logo-txt span{color:var(--gold);font-size:10px;display:block;font-weight:400;letter-spacing:0.1em;}
+    .nav-links{display:flex;gap:28px;}
+    .nav-links a{font-size:13px;color:rgba(255,255,255,0.65);text-decoration:none;transition:color .2s;}
+    .nav-links a:hover{color:#fff;}
+    .nav-links a.active{color:var(--gold);font-weight:600;}
+    .nav-cta{font-size:13px;font-weight:600;padding:10px 22px;background:var(--gold);color:var(--navy);border:none;border-radius:8px;cursor:pointer;text-decoration:none;}
+    .hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;}
+    .hamburger span{display:block;width:22px;height:2px;background:#fff;border-radius:2px;}
+
+    /* PAGE HERO */
+    .page-hero{background:var(--navy);padding:64px 40px 56px;}
+    .hero-label{font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;font-weight:600;}
+    .hero-title{font-family:var(--font-display);font-size:46px;font-weight:700;color:#fff;line-height:1.15;margin-bottom:16px;}
+    .hero-title em{color:var(--gold);font-style:normal;}
+    .hero-sub{font-size:15px;color:rgba(255,255,255,0.6);line-height:1.75;max-width:560px;}
+    .breadcrumb{display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:24px;}
+    .breadcrumb a{color:rgba(255,255,255,0.4);text-decoration:none;}
+    .breadcrumb a:hover{color:var(--gold);}
+
+    /* PROGRAM TABS */
+    .prog-tabs{background:#fff;border-bottom:0.5px solid var(--border);padding:0 40px;display:flex;gap:0;overflow-x:auto;}
+    .prog-tab{font-size:13px;font-weight:500;padding:18px 24px;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;color:#888;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:var(--font-body);}
+    .prog-tab.active{color:var(--navy);border-bottom-color:var(--gold);font-weight:600;}
+    .prog-tab:hover{color:var(--navy);}
+
+    /* PROGRAM OVERVIEW CARDS */
+    .prog-overview{padding:64px 40px;background:var(--light);border-bottom:0.5px solid var(--border);}
+    .section-label{font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;font-weight:600;}
+    .section-title{font-family:var(--font-display);font-size:32px;font-weight:700;margin-bottom:10px;}
+    .section-sub{font-size:15px;color:#5F5E5A;line-height:1.7;max-width:520px;margin-bottom:40px;}
+    .prog-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+    .prog-card{border-radius:14px;overflow:hidden;border:0.5px solid var(--border);background:#fff;cursor:pointer;transition:transform .2s;}
+    .prog-card:hover{transform:translateY(-3px);}
+    .prog-card-header{height:100px;display:flex;align-items:center;justify-content:center;position:relative;}
+    .prog-card-header.edu{background:var(--teal);}
+    .prog-card-header.health{background:var(--blue);}
+    .prog-card-header.youth{background:var(--amber);}
+    .prog-card-header.community{background:var(--coral);}
+    .prog-card-body{padding:18px;}
+    .prog-card-name{font-size:14px;font-weight:600;margin-bottom:6px;}
+    .prog-card-desc{font-size:12px;color:#5F5E5A;line-height:1.6;}
+    .prog-card-link{font-size:12px;font-weight:600;color:var(--teal);margin-top:12px;display:inline-block;text-decoration:none;}
+
+    /* EDUCATION SECTION */
+    .edu-section{padding:64px 40px;border-bottom:0.5px solid var(--border);}
+    .edu-inner{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;margin-top:40px;}
+    .edu-img{background:var(--teal);border-radius:16px;height:320px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+    .edu-img-badge{position:absolute;bottom:20px;left:20px;background:#fff;color:var(--teal);font-size:11px;font-weight:700;padding:6px 14px;border-radius:100px;}
+    .edu-text h3{font-family:var(--font-display);font-size:26px;font-weight:700;margin-bottom:14px;}
+    .edu-text p{font-size:14px;color:#5F5E5A;line-height:1.8;margin-bottom:16px;}
+
+    /* BACK TO SCHOOL PROJECT */
+    .bts-section{padding:64px 40px;background:var(--navy);}
+    .bts-tag{display:inline-block;background:rgba(245,158,11,0.15);color:var(--gold);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;padding:5px 14px;border-radius:100px;margin-bottom:14px;font-weight:600;}
+    .bts-title{font-family:var(--font-display);font-size:32px;font-weight:700;color:#fff;margin-bottom:12px;}
+    .bts-sub{font-size:15px;color:rgba(255,255,255,0.6);line-height:1.75;max-width:640px;margin-bottom:48px;}
+
+    /* FUNDRAISING STATUS */
+    .fundraising-status{background:rgba(255,255,255,0.05);border:0.5px solid rgba(255,255,255,0.12);border-radius:14px;padding:28px;margin-bottom:40px;}
+    .fs-label{font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:6px;}
+    .fs-status{display:flex;align-items:center;gap:10px;margin-bottom:20px;}
+    .fs-badge{background:var(--gold);color:var(--navy);font-size:11px;font-weight:700;padding:4px 12px;border-radius:100px;}
+    .fs-title-text{font-size:16px;font-weight:600;color:#fff;}
+    .fs-bar-wrap{margin-bottom:10px;}
+    .fs-bar-row{display:flex;justify-content:space-between;font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:8px;}
+    .fs-bar{height:8px;background:rgba(255,255,255,0.1);border-radius:4px;overflow:hidden;}
+    .fs-fill{height:100%;border-radius:4px;background:var(--gold);}
+    .fs-note{font-size:12px;color:rgba(255,255,255,0.4);}
+
+    /* PROJECT CHARTER */
+    .charter-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:48px;}
+    .charter-card{background:rgba(255,255,255,0.04);border:0.5px solid rgba(255,255,255,0.08);border-radius:12px;padding:22px;}
+    .charter-card-label{font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:8px;}
+    .charter-card-value{font-size:14px;font-weight:500;color:#fff;line-height:1.5;}
+
+    /* ROADMAP */
+    .roadmap-title{font-family:var(--font-display);font-size:22px;font-weight:700;color:#fff;margin-bottom:28px;}
+    .roadmap{display:flex;flex-direction:column;gap:0;}
+    .roadmap-step{display:flex;gap:24px;align-items:flex-start;}
+    .roadmap-line{display:flex;flex-direction:column;align-items:center;flex-shrink:0;}
+    .roadmap-dot{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;}
+    .dot-done{background:var(--teal);color:#fff;}
+    .dot-active{background:var(--gold);color:var(--navy);}
+    .dot-upcoming{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.4);border:0.5px solid rgba(255,255,255,0.15);}
+    .roadmap-connector{width:2px;height:40px;background:rgba(255,255,255,0.08);margin:4px 0;}
+    .roadmap-connector.done{background:var(--teal);opacity:0.4;}
+    .roadmap-body{padding-bottom:32px;}
+    .roadmap-step-label{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:4px;}
+    .roadmap-step-title{font-size:15px;font-weight:600;color:#fff;margin-bottom:6px;}
+    .roadmap-step-desc{font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;}
+    .roadmap-step-date{font-size:11px;color:var(--gold);margin-top:8px;font-weight:500;}
+
+    /* EVENT CALENDAR */
+    .calendar-section{padding:64px 40px;background:var(--light);}
+    .cal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+    .cal-card{background:#fff;border:0.5px solid var(--border);border-radius:14px;overflow:hidden;}
+    .cal-header{padding:24px 24px 20px;position:relative;}
+    .cal-header.edu{background:var(--teal);}
+    .cal-header.health{background:var(--blue);}
+    .cal-header.community{background:var(--coral);}
+    .cal-month{font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.7);margin-bottom:4px;}
+    .cal-date{font-size:32px;font-weight:700;color:#fff;line-height:1;}
+    .cal-year{font-size:13px;color:rgba(255,255,255,0.6);margin-top:2px;}
+    .cal-type{position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.2);color:#fff;font-size:10px;padding:4px 10px;border-radius:100px;font-weight:500;}
+    .cal-body{padding:20px 24px;}
+    .cal-event-name{font-size:15px;font-weight:600;margin-bottom:8px;}
+    .cal-event-detail{font-size:12px;color:#888;margin-bottom:4px;display:flex;align-items:center;gap:6px;}
+    .cal-event-desc{font-size:13px;color:#5F5E5A;line-height:1.6;margin-top:10px;margin-bottom:14px;}
+    .cal-btn{font-size:12px;font-weight:600;padding:8px 18px;background:var(--navy);color:#fff;border:none;border-radius:6px;cursor:pointer;font-family:var(--font-body);}
+
+    /* OTHER PROGRAMS */
+    .other-programs{padding:64px 40px;border-top:0.5px solid var(--border);}
+    .other-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+    .other-card{border-radius:14px;overflow:hidden;border:0.5px solid var(--border);}
+    .other-header{height:80px;display:flex;align-items:center;padding:0 24px;}
+    .other-header.health{background:var(--blue);}
+    .other-header.youth{background:var(--amber);}
+    .other-header.community{background:var(--coral);}
+    .other-header-title{font-size:16px;font-weight:600;color:#fff;}
+    .other-body{padding:22px 24px;background:#fff;}
+    .other-body p{font-size:13px;color:#5F5E5A;line-height:1.7;margin-bottom:14px;}
+    .other-body a{font-size:12px;font-weight:600;color:var(--teal);text-decoration:none;}
+
+    /* FOOTER */
+    footer{background:var(--navy);padding:32px 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+    .footer-copy{font-size:12px;color:rgba(255,255,255,0.35);}
+    .footer-links{display:flex;gap:20px;}
+    .footer-links a{font-size:12px;color:rgba(255,255,255,0.4);text-decoration:none;}
+    .footer-links a:hover{color:var(--gold);}
+
+    /* RESPONSIVE */
+    @media(max-width:900px){
+      .prog-cards{grid-template-columns:repeat(2,1fr);}
+      .charter-grid{grid-template-columns:repeat(2,1fr);}
+      .cal-grid{grid-template-columns:1fr;}
+      .other-grid{grid-template-columns:1fr;}
+    }
+    @media(max-width:768px){
+      nav{padding:14px 20px;}
+      .nav-links{display:none;}
+      .hamburger{display:flex;}
+      .nav-links.open{display:flex;flex-direction:column;position:absolute;top:56px;left:0;right:0;background:var(--navy);padding:20px 24px;gap:16px;border-top:0.5px solid rgba(255,255,255,0.1);z-index:99;}
+      .page-hero{padding:48px 20px 40px;}
+      .hero-title{font-size:30px;}
+      .prog-tabs{padding:0 20px;}
+      .prog-overview,.edu-section,.bts-section,.calendar-section,.other-programs{padding:48px 20px;}
+      .prog-cards{grid-template-columns:1fr 1fr;}
+      .edu-inner{grid-template-columns:1fr;}
+      .edu-img{height:200px;}
+      .charter-grid{grid-template-columns:1fr;}
+      footer{padding:24px 20px;flex-direction:column;align-items:flex-start;}
+    }
+    @media(max-width:480px){
+      .prog-cards{grid-template-columns:1fr;}
+      .hero-title{font-size:26px;}
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo-wrap">
+    <svg width="36" height="36" viewBox="0 0 44 44" fill="none">
+      <path d="M22 2L38 10V28C38 35 30 41 22 43C14 41 6 35 6 28V10L22 2Z" fill="#F59E0B" opacity="0.18" stroke="#F59E0B" stroke-width="1.5"/>
+      <path d="M15 17H27M15 22H24M15 27H27" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
+      <path d="M27 17L29.5 22L27 27" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div class="logo-txt">The Excel Foundation<span>Raising Excellence · Changing Lives</span></div>
+  </a>
+  <div class="nav-links" id="nav-links">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="programs.html" class="active">Programs</a>
+    <a href="volunteer.html">Volunteer</a>
+    <a href="media.html">Media</a>
+    <a href="donate.html">Donate</a>
+  </div>
+  <a href="donate.html" class="nav-cta">Donate now</a>
+  <button class="hamburger" onclick="document.getElementById('nav-links').classList.toggle('open')" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="breadcrumb"><a href="index.html">Home</a><span>/</span><span>Programs</span></div>
+  <div class="hero-label">What we do</div>
+  <h1 class="hero-title">Programs built to<br/><em>transform communities.</em></h1>
+  <p class="hero-sub">Four focused pillars of impact — each rooted in faith, driven by data, and delivered with compassion to the communities that need it most.</p>
+</section>
+
+<!-- PROGRAM OVERVIEW CARDS -->
+<section class="prog-overview">
+  <div class="section-label">Our four pillars</div>
+  <div class="section-title">Where we focus</div>
+  <div class="prog-cards">
+    <div class="prog-card">
+      <div class="prog-card-header edu">
+        <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><path d="M4 12L18 4L32 12V24L18 32L4 24V12Z" stroke="rgba(255,255,255,0.6)" stroke-width="1.2" fill="none"/><path d="M18 12V24M12 15L18 12L24 15" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <div class="prog-card-body">
+        <div class="prog-card-name">Education</div>
+        <div class="prog-card-desc">Scholarships, school projects, and teacher development for underserved children.</div>
+        <a href="#education" class="prog-card-link">View program →</a>
+      </div>
+    </div>
+    <div class="prog-card">
+      <div class="prog-card-header health">
+        <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><path d="M18 4C18 4 6 10 6 20C6 26.6 11.4 32 18 32C24.6 32 30 26.6 30 20C30 10 18 4 18 4Z" stroke="rgba(255,255,255,0.6)" stroke-width="1.2" fill="none"/><path d="M14 18H22M18 14V22" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <div class="prog-card-body">
+        <div class="prog-card-name">Health</div>
+        <div class="prog-card-desc">Mobile clinics, maternal health, and nutrition drives reaching remote communities.</div>
+        <a href="#other-programs" class="prog-card-link" style="color:var(--blue);">View program →</a>
+      </div>
+    </div>
+    <div class="prog-card">
+      <div class="prog-card-header youth">
+        <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="12" r="6" stroke="rgba(255,255,255,0.6)" stroke-width="1.2" fill="none"/><path d="M8 32C8 26.5 12.5 22 18 22C23.5 22 28 26.5 28 32" stroke="#fff" stroke-width="1.5" stroke-linecap="round" fill="none"/><path d="M24 8L26 12L28 8" stroke="rgba(255,255,255,0.6)" stroke-width="1" stroke-linecap="round"/></svg>
+      </div>
+      <div class="prog-card-body">
+        <div class="prog-card-name">Youth Empowerment</div>
+        <div class="prog-card-desc">Vocational training, mentorship, and micro-grants for young people aged 16–30.</div>
+        <a href="#other-programs" class="prog-card-link" style="color:var(--amber);">View program →</a>
+      </div>
+    </div>
+    <div class="prog-card">
+      <div class="prog-card-header community">
+        <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="12" stroke="rgba(255,255,255,0.6)" stroke-width="1.2" fill="none"/><circle cx="18" cy="18" r="5" stroke="#fff" stroke-width="1.5" fill="none"/><path d="M18 6V13M18 23V30M6 18H13M23 18H30" stroke="rgba(255,255,255,0.6)" stroke-width="1" stroke-linecap="round"/></svg>
+      </div>
+      <div class="prog-card-body">
+        <div class="prog-card-name">Community Outreach</div>
+        <div class="prog-card-desc">Humanitarian aid, food drives, and faith-inspired community events.</div>
+        <a href="#other-programs" class="prog-card-link" style="color:var(--coral);">View program →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION PROGRAM -->
+<section class="edu-section" id="education">
+  <div class="section-label">Education Program</div>
+  <div class="section-title">Building futures through learning</div>
+  <div class="edu-inner">
+    <div class="edu-img">
+      <!-- Replace with: <img src="images/education.jpg" style="width:100%;height:100%;object-fit:cover;"> -->
+      <svg width="100" height="100" viewBox="0 0 100 100">
+        <path d="M12 40L50 18L88 40V70L50 92L12 70V40Z" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+        <path d="M50 30V70M36 44L50 30L64 44" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="50" cy="50" r="6" fill="rgba(255,255,255,0.3)"/>
+      </svg>
+      <div class="edu-img-badge">Education Program</div>
+    </div>
+    <div class="edu-text">
+      <h3>Every child deserves a quality education</h3>
+      <p>Our Education Program is the cornerstone of The Excel Foundation's work. We believe that access to quality education is both a right and a foundation for everything else — economic stability, health, confidence, and community leadership.</p>
+      <p>Through scholarships, school infrastructure projects, teacher training, and learning materials distribution, we are breaking down the barriers that keep children out of classrooms.</p>
+      <p>Our flagship sub-project — <strong>Back to School</strong> — tackles one of the most immediate barriers: the cost of school supplies, uniforms, and registration fees at the start of each academic year.</p>
+    </div>
+  </div>
+</section>
+
+<!-- BACK TO SCHOOL PROJECT -->
+<section class="bts-section">
+  <div class="bts-tag">Sub-project · Education</div>
+  <div class="bts-title">Back to School Project 2026</div>
+  <div class="bts-sub">Ensuring every child walks into the new academic year equipped, confident, and ready to learn — regardless of their family's financial situation.</div>
+
+  <!-- FUNDRAISING STATUS -->
+  <div class="fundraising-status">
+    <div class="fs-label">Project status</div>
+    <div class="fs-status">
+      <div class="fs-badge">Fundraising in progress</div>
+      <div class="fs-title-text">Back to School 2026 — Active campaign</div>
+    </div>
+    <div class="fs-bar-wrap">
+      <div class="fs-bar-row"><span>Funds raised</span><span>Update with live figure</span></div>
+      <div class="fs-bar"><div class="fs-fill" style="width:35%;"></div></div>
+    </div>
+    <div class="fs-note">Target: ₦[Update target amount] · Beneficiaries: [Update number] children · Academic year: 2026/2027</div>
+  </div>
+
+  <!-- PROJECT CHARTER -->
+  <div style="margin-bottom:20px;">
+    <div style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;font-weight:600;">Project Charter</div>
+  </div>
+  <div class="charter-grid">
+    <div class="charter-card">
+      <div class="charter-card-label">Project name</div>
+      <div class="charter-card-value">Back to School Project 2026</div>
+    </div>
+    <div class="charter-card">
+      <div class="charter-card-label">Project sponsor</div>
+      <div class="charter-card-value">The Excel Foundation</div>
+    </div>
+    <div class="charter-card">
+      <div class="charter-card-label">Project status</div>
+      <div class="charter-card-value" style="color:var(--gold);">Fundraising Phase</div>
+    </div>
+    <div class="charter-card">
+      <div class="charter-card-label">Target beneficiaries</div>
+      <div class="charter-card-value">[Update: e.g. 200 children] across [communities]</div>
+    </div>
+    <div class="charter-card">
+      <div class="charter-card-label">Project location</div>
+      <div class="charter-card-value">[Update: State / LGA / community name]</div>
+    </div>
+    <div class="charter-card">
+      <div class="charter-card-label">Delivery date</div>
+      <div class="charter-card-value">[Update: e.g. September 2026 — Start of academic year]</div>
+    </div>
+    <div class="charter-card">
+      <div class="charter-card-label">What we provide</div>
+      <div class="charter-card-value">School bags, textbooks, uniforms, stationery, registration support</div>
+    </div>
+    <div class="charter-card">
+      <div class="charter-card-label">Project lead</div>
+      <div class="charter-card-value">[Update: Name, title]</div>
+    </div>
+    <div class="charter-card">
+      <div class="charter-card-label">Budget</div>
+      <div class="charter-card-value">₦[Update total budget]</div>
+    </div>
+  </div>
+
+  <!-- ROADMAP -->
+  <div class="roadmap-title">Project Roadmap</div>
+  <div class="roadmap">
+    <div class="roadmap-step">
+      <div class="roadmap-line">
+        <div class="roadmap-dot dot-done">✓</div>
+        <div class="roadmap-connector done"></div>
+      </div>
+      <div class="roadmap-body">
+        <div class="roadmap-step-label">Phase 1 — Complete</div>
+        <div class="roadmap-step-title">Planning & community needs assessment</div>
+        <div class="roadmap-step-desc">Identified target communities, assessed number of beneficiary children, established project charter and delivery plan.</div>
+        <div class="roadmap-step-date">Completed</div>
+      </div>
+    </div>
+    <div class="roadmap-step">
+      <div class="roadmap-line">
+        <div class="roadmap-dot dot-active">2</div>
+        <div class="roadmap-connector"></div>
+      </div>
+      <div class="roadmap-body">
+        <div class="roadmap-step-label">Phase 2 — In Progress</div>
+        <div class="roadmap-step-title">Fundraising campaign</div>
+        <div class="roadmap-step-desc">Raising funds through individual donors, corporate sponsors, and community contributions to reach our target. Every donation directly buys supplies for a child.</div>
+        <div class="roadmap-step-date">Now — [Update: deadline date]</div>
+      </div>
+    </div>
+    <div class="roadmap-step">
+      <div class="roadmap-line">
+        <div class="roadmap-dot dot-upcoming">3</div>
+        <div class="roadmap-connector"></div>
+      </div>
+      <div class="roadmap-body">
+        <div class="roadmap-step-label">Phase 3 — Upcoming</div>
+        <div class="roadmap-step-title">Procurement of school supplies</div>
+        <div class="roadmap-step-desc">Bulk purchase of school bags, textbooks, uniforms, exercise books, and stationery from vetted suppliers. Quality checked before distribution.</div>
+        <div class="roadmap-step-date">[Update: planned date]</div>
+      </div>
+    </div>
+    <div class="roadmap-step">
+      <div class="roadmap-line">
+        <div class="roadmap-dot dot-upcoming">4</div>
+        <div class="roadmap-connector"></div>
+      </div>
+      <div class="roadmap-body">
+        <div class="roadmap-step-label">Phase 4 — Upcoming</div>
+        <div class="roadmap-step-title">Community distribution event</div>
+        <div class="roadmap-step-desc">On-the-ground distribution day in target communities. Children receive their packs, photos and testimonials captured for our impact report.</div>
+        <div class="roadmap-step-date">[Update: planned date]</div>
+      </div>
+    </div>
+    <div class="roadmap-step">
+      <div class="roadmap-line">
+        <div class="roadmap-dot dot-upcoming">5</div>
+      </div>
+      <div class="roadmap-body" style="padding-bottom:0;">
+        <div class="roadmap-step-label">Phase 5 — Upcoming</div>
+        <div class="roadmap-step-title">Impact reporting & donor update</div>
+        <div class="roadmap-step-desc">Full transparency report published — number of children served, photos, financial breakdown, and testimonials shared with all donors and partners.</div>
+        <div class="roadmap-step-date">[Update: planned date]</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DONATE CTA -->
+  <div style="margin-top:48px;text-align:center;padding:36px;background:rgba(245,158,11,0.08);border:0.5px solid rgba(245,158,11,0.25);border-radius:14px;">
+    <div style="font-size:14px;color:rgba(255,255,255,0.6);margin-bottom:8px;">Support the Back to School Project</div>
+    <div style="font-family:var(--font-display);font-size:26px;font-weight:700;color:#fff;margin-bottom:16px;">Help a child start their academic year right</div>
+    <a href="donate.html" style="display:inline-block;padding:14px 36px;background:var(--gold);color:var(--navy);font-size:14px;font-weight:700;border-radius:8px;text-decoration:none;">Donate to Back to School →</a>
+  </div>
+</section>
+
+<!-- EVENT CALENDAR -->
+<section class="calendar-section">
+  <div class="section-label">Event calendar</div>
+  <div class="section-title">Upcoming program events</div>
+  <div class="section-sub">Join us on the ground — here are the next three key program events across our pillars.</div>
+  <div class="cal-grid">
+    <div class="cal-card">
+      <div class="cal-header edu">
+        <div class="cal-type">Education</div>
+        <div class="cal-month">[Month]</div>
+        <div class="cal-date">[DD]</div>
+        <div class="cal-year">2026</div>
+      </div>
+      <div class="cal-body">
+        <div class="cal-event-name">Back to School Distribution Day</div>
+        <div class="cal-event-detail">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1C3.8 1 2 2.8 2 5C2 8 6 11 6 11C6 11 10 8 10 5C10 2.8 8.2 1 6 1Z" stroke="#888" stroke-width="1" fill="none"/><circle cx="6" cy="5" r="1.5" stroke="#888" stroke-width="1" fill="none"/></svg>
+          [Update: Venue / Community name]
+        </div>
+        <div class="cal-event-detail">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#888" stroke-width="1"/><path d="M6 3.5V6L7.5 7.5" stroke="#888" stroke-width="1" stroke-linecap="round"/></svg>
+          [Update: Time]
+        </div>
+        <div class="cal-event-desc">School supply packs distributed to [X] children. Open to volunteers and donors. Come and witness the impact firsthand.</div>
+        <button class="cal-btn" onclick="window.location.href='volunteer.html'">Volunteer for this event</button>
+      </div>
+    </div>
+    <div class="cal-card">
+      <div class="cal-header health">
+        <div class="cal-type">Health</div>
+        <div class="cal-month">[Month]</div>
+        <div class="cal-date">[DD]</div>
+        <div class="cal-year">2026</div>
+      </div>
+      <div class="cal-body">
+        <div class="cal-event-name">Mobile Health Clinic Drive</div>
+        <div class="cal-event-detail">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1C3.8 1 2 2.8 2 5C2 8 6 11 6 11C6 11 10 8 10 5C10 2.8 8.2 1 6 1Z" stroke="#888" stroke-width="1" fill="none"/><circle cx="6" cy="5" r="1.5" stroke="#888" stroke-width="1" fill="none"/></svg>
+          [Update: Location]
+        </div>
+        <div class="cal-event-detail">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#888" stroke-width="1"/><path d="M6 3.5V6L7.5 7.5" stroke="#888" stroke-width="1" stroke-linecap="round"/></svg>
+          [Update: Time]
+        </div>
+        <div class="cal-event-desc">Free medical consultations, medications, and maternal health screenings. Partnering with local health professionals.</div>
+        <button class="cal-btn" onclick="window.location.href='volunteer.html'">Volunteer for this event</button>
+      </div>
+    </div>
+    <div class="cal-card">
+      <div class="cal-header community">
+        <div class="cal-type">Community</div>
+        <div class="cal-month">[Month]</div>
+        <div class="cal-date">[DD]</div>
+        <div class="cal-year">2026</div>
+      </div>
+      <div class="cal-body">
+        <div class="cal-event-name">Community Outreach Day</div>
+        <div class="cal-event-detail">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1C3.8 1 2 2.8 2 5C2 8 6 11 6 11C6 11 10 8 10 5C10 2.8 8.2 1 6 1Z" stroke="#888" stroke-width="1" fill="none"/><circle cx="6" cy="5" r="1.5" stroke="#888" stroke-width="1" fill="none"/></svg>
+          [Update: Location]
+        </div>
+        <div class="cal-event-detail">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#888" stroke-width="1"/><path d="M6 3.5V6L7.5 7.5" stroke="#888" stroke-width="1" stroke-linecap="round"/></svg>
+          [Update: Time]
+        </div>
+        <div class="cal-event-desc">Food and essential items distribution, community prayer and fellowship, engaging with local leaders and families.</div>
+        <button class="cal-btn" onclick="window.location.href='volunteer.html'">Volunteer for this event</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OTHER PROGRAMS -->
+<section class="other-programs" id="other-programs">
+  <div class="section-label">Our other programs</div>
+  <div class="section-title">Beyond education</div>
+  <div class="section-sub" style="margin-bottom:32px;">Our work spans three additional pillars — each focused on holistic community transformation.</div>
+  <div class="other-grid">
+    <div class="other-card">
+      <div class="other-header health"><div class="other-header-title">Community Health</div></div>
+      <div class="other-body">
+        <p>Mobile clinics, vaccination campaigns, maternal health screenings, and nutrition programs reaching communities with limited access to healthcare facilities.</p>
+        <a href="volunteer.html">Support this program →</a>
+      </div>
+    </div>
+    <div class="other-card">
+      <div class="other-header youth"><div class="other-header-title">Youth Empowerment</div></div>
+      <div class="other-body">
+        <p>Vocational skills training, mentorship programmes, micro-business grants, and leadership bootcamps for young Nigerians aged 16–30.</p>
+        <a href="volunteer.html" style="color:var(--amber);">Support this program →</a>
+      </div>
+    </div>
+    <div class="other-card">
+      <div class="other-header community"><div class="other-header-title">Community Outreach</div></div>
+      <div class="other-body">
+        <p>Humanitarian food drives, essential items distribution, faith-based community events, and partnering with local leaders for grassroots change.</p>
+        <a href="volunteer.html" style="color:var(--coral);">Support this program →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-copy">© 2026 The Excel Foundation · CAC Registered NGO</div>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="donate.html">Donate</a>
+    <a href="volunteer.html">Volunteer</a>
+  </div>
+</footer>
+
+<script>
+  document.querySelector('.hamburger').addEventListener('click', () => {
+    document.getElementById('nav-links').classList.toggle('open');
+  });
+</script>
+</body>
+</html>
